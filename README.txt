@@ -1,3 +1,16 @@
+READEME FIRST
+
+This is a Wordpress plugin I wrote for a site I was working on. I have not got
+the time or inclination at this point to upload this to wordpress.org as a plugin
+and have to support it there.
+
+I'm happy for bug reports, ideas and suggestions but I can't provide any real
+support hence me uploading to github only and not wordpress.org
+
+I also think the plugin needs renaming as it clashes with a similar named plugin
+that does something slightly different with a facebook/wordpress link 
+
+
 === Facebook Feeder ===
 Contributors: robin.cornelius
 Donate link: http://example.com/
@@ -44,12 +57,6 @@ This is set to every 10 minutes but will be limited by the retry delay setting
 Non yet
 
 == Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
 
 == Changelog ==
 
