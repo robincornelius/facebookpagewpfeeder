@@ -62,20 +62,33 @@ class Facebook_parser
                
         foreach($storys as $entry)
         {                   
-            $attachments = [];
+            $imgattachments = [];
             $imghtml = "";
             
             // TODO currently we insert all found images into the media library
             // we only use the first one as featured image
-            // the others are linked directly from fbcdn so this inconsistency
+            // the others are linked di rectly from fbcdn so this inconsistency
             // needs addressing and/or options added
+                        
             foreach($entry['img'] as $img)
             {
                 $attachid = $this->insert_media_from_url($img);
-                array_push($attachments,$attachid);
+                array_push($imgattachments,$attachid);
                          
                 $imghtml.="<img alt='Facebook photo' src='".$img."' </img>";
             }
+            
+            if($entry['type']=="video")
+            {
+                $videoid = $entry['mediatarget'];
+                $imghtml = "[facebook_video videoid=\"$videoid\"]";
+            }
+            
+            //The above is a bit dirty, eg for a video post there will be an img attachment
+            //the static preview image of the video and this gets pished to $imgattachments
+            //then later used for the preview image for the post, which is good.
+            //but its using imghtml to convey the rest of the media
+            //Also what other media types do we need to support and in what other ways?
 
             //This is not currently used but generates a link back to the original facebook post
             $linkhtml = "<br /><a href='".$entry['link']."'>See original facebook post here</a><br />";
@@ -112,9 +125,9 @@ class Facebook_parser
             // Insert the post into the database
             $new_post_id = wp_insert_post( $my_post );
                     
-            if(sizeof($attachments)>0)
+            if(sizeof($imgattachments)>0)
             {
-                update_post_meta( $new_post_id, '_thumbnail_id', $attachments[0] );
+                update_post_meta( $new_post_id, '_thumbnail_id', $imgattachments[0] );
             }
 
             // The facebook feed is newest first so only set the lastfbpost for the
@@ -192,7 +205,9 @@ class Facebook_parser
              if(!is_null($id->attachments->data))
             {     
                 foreach($id->attachments->data as $at)
-                {
+                {  
+                    $entry['mediatarget']=$at->target->id;
+
                     if($at->media->image->src!="")
                     {
                         array_push($img,$at->media->image->src);       
@@ -214,6 +229,9 @@ class Facebook_parser
             $entry['img'] = $img;
             $entry['link'] = $id->link;
             $entry['time'] = $id->created_time;
+            $entry['type'] = $id->type;
+            
+            echo "POST TYPE IS ".$entry['type']."\n";
             array_push($data,$entry);
         }
 

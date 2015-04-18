@@ -27,6 +27,41 @@
  * @subpackage Plugin_Name/includes
  * @author     Your Name <email@example.com>
  */
+
+// fix me this global function is really not in keeping with the nature of the
+// plugin framework
+function facebookvideo_handler($atts) {
+      
+    $a = shortcode_atts( array(
+        'videoid' => '0'
+    ), $atts );
+       
+    if($a['videoid']==0)
+    {
+        echo "Error No Video ID speciffied";
+        return;
+    }
+             
+    $videoid = $a['videoid'];
+    ob_start();
+    ?> 
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=267379299948332";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-video" data-href="https://www.facebook.com/video.php?v=<?php echo "$videoid"?>" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="/FacebookDevelopers/videos/<?php echo "$videoid"?>/"><a href="/mum123shop/videos/<?php echo "$videoid"?>/"></a>
+</blockquote></div></div>
+    
+    <?php
+	return ob_get_clean();
+  }
+        
 class Plugin_Name {
 
 	/**
@@ -179,9 +214,11 @@ class Plugin_Name {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
                 
                 $this->loader->add_action( 'parse_request', $plugin_public, 'my_custom_url_handler' );
-	}
+	
+                add_shortcode( 'facebook_video', 'facebookvideo_handler' );        
+        }
 
-	/**
+        /**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since    1.0.0
