@@ -63,6 +63,12 @@ do_settings_sections( 'FacebookPageFeed' );
             ?>
            </td>
         </tr>
+		
+		<tr valign="top">
+        <th scope="row">Post title (??? posted on facebook) </th>
+        <td><input type="text" name="facebookfeed_who" value="<?php echo esc_attr( get_option('facebookfeed_who') ); ?>" /></td>
+        </tr>
+
         
          <tr valign="top">
         <th scope="row">Category</th>

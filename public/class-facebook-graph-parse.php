@@ -184,6 +184,8 @@ class Facebook_parser
         if(is_null($ids['data']))
             return NULL;
             
+		$whoposted = get_option('facebookfeed_who');
+		 
         foreach($ids['data'] as $id)
         {
             if($id->story!="")
@@ -194,17 +196,17 @@ class Facebook_parser
             {
                 if($id->status_type=="added_photos")
                 {
-                    $story = "Mum 123 added photos";
+                    $story = $whoposted." added photos";
                 }
                 if($id->status_type=="mobile_status_update")
                 {
-                    $story = "Mum 123 posted an update";      
+                    $story = $whoposted." posted an update";      
                 }
             }    
 
 	    if($story=="")
 	    {
-                    $story = "Mum 123 posted on facebook";      
+                    $story = $whoposted." posted on facebook";      
 	    }
    
             $entry['title'] = $story;
