@@ -22,6 +22,7 @@ class Facebook_parser
 {
     public function run()
     {
+
         $synclimit = get_option('facebookfeed_synclimit');
         $nextsyncfrom = get_option('facebookfeed_nextsyncfrom');
                 
@@ -69,7 +70,8 @@ class Facebook_parser
             // we only use the first one as featured image
             // the others are linked di rectly from fbcdn so this inconsistency
             // needs addressing and/or options added
-                        
+            $imghtml = "[facebook_sdk]";  
+            
             foreach($entry['img'] as $img)
             {
                 $attachid = $this->insert_media_from_url($img);
@@ -81,8 +83,11 @@ class Facebook_parser
             if($entry['type']=="video")
             {
                 $videoid = $entry['mediatarget'];
-                $imghtml = "[facebook_video videoid=\"$videoid\"]";
+                $imghtml = "[facebook_sdk][facebook_video videoid=\"$videoid\"]";
             }
+            
+            $href = $entry['link'];
+            $imghtml .= "<br>[facebook_like]";
             
             //The above is a bit dirty, eg for a video post there will be an img attachment
             //the static preview image of the video and this gets pished to $imgattachments
@@ -119,8 +124,11 @@ class Facebook_parser
                 'post_category' => array(get_option('facebookfeed_postcategory')),
                 'post_type'     => 'post',
                 'post_date'     => $date,
-                'post_date_gmt' => $date
+                'post_date_gmt' => $date,
+		'filter' => true 
             );
+
+	    remove_filter('content_save_pre', 'wp_filter_post_kses');
                     
             // Insert the post into the database
             $new_post_id = wp_insert_post( $my_post );
@@ -129,6 +137,8 @@ class Facebook_parser
             {
                 update_post_meta( $new_post_id, '_thumbnail_id', $imgattachments[0] );
             }
+
+		add_filter('content_save_pre', 'wp_filter_post_kses');
 
             // The facebook feed is newest first so only set the lastfbpost for the
             // first item
@@ -190,7 +200,13 @@ class Facebook_parser
                 {
                     $story = "Mum 123 posted an update";      
                 }
-            }       
+            }    
+
+	    if($story=="")
+	    {
+                    $story = "Mum 123 posted on facebook";      
+	    }
+   
             $entry['title'] = $story;
 
             $message = $id->message;
@@ -230,8 +246,7 @@ class Facebook_parser
             $entry['link'] = $id->link;
             $entry['time'] = $id->created_time;
             $entry['type'] = $id->type;
-            
-            echo "POST TYPE IS ".$entry['type']."\n";
+
             array_push($data,$entry);
         }
 

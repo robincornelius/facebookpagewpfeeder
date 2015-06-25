@@ -46,7 +46,20 @@ function facebookvideo_handler($atts) {
     ob_start();
     ?> 
 
-<div id="fb-root"></div>
+<div class="fb-video" data-href="https://www.facebook.com/video.php?v=<?php echo "$videoid"?>" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="/FacebookDevelopers/videos/<?php echo "$videoid"?>/"><a href="/mum123shop/videos/<?php echo "$videoid"?>/"></a>
+</blockquote></div></div>
+    
+    <?php
+	return ob_get_clean();
+  }
+    
+function facebookinsertSDK()
+{
+
+    ob_start();
+    ?>
+
+    <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -54,14 +67,22 @@ function facebookvideo_handler($atts) {
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=267379299948332";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+     <?php
+	return ob_get_clean();
+}
 
-<div class="fb-video" data-href="https://www.facebook.com/video.php?v=<?php echo "$videoid"?>" data-width="500"><div class="fb-xfbml-parse-ignore"><blockquote cite="/FacebookDevelopers/videos/<?php echo "$videoid"?>/"><a href="/mum123shop/videos/<?php echo "$videoid"?>/"></a>
-</blockquote></div></div>
+function facebookinsertlike($atts)
+{
     
+     ob_start();
+    ?>
+
+    <div class="fb-like" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     <?php
 	return ob_get_clean();
-  }
-        
+}
+  
+  
 class Plugin_Name {
 
 	/**
@@ -215,7 +236,9 @@ class Plugin_Name {
                 
                 $this->loader->add_action( 'parse_request', $plugin_public, 'my_custom_url_handler' );
 	
-                add_shortcode( 'facebook_video', 'facebookvideo_handler' );        
+                add_shortcode( 'facebook_sdk', 'facebookinsertSDK' );   
+                add_shortcode( 'facebook_video', 'facebookvideo_handler' );   
+                add_shortcode( 'facebook_like', 'facebookinsertlike' );   
         }
 
         /**
