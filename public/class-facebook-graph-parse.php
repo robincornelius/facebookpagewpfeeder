@@ -167,7 +167,7 @@ class Facebook_parser
         $request = new FacebookRequest(
             $session,
             'GET',
-            "/$pageid/feed?fields=story,message,attachments,link,full_picture,type,description,status_type&since=$since"
+            "/$pageid/posts?fields=story,message,attachments,link,full_picture,type,description,status_type&since=$since"
         );
 
         $response = $request->execute();
