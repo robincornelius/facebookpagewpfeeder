@@ -185,6 +185,8 @@ class Facebook_parser
             return NULL;
             
 		$whoposted = get_option('facebookfeed_who');
+		
+		$titletype = get_option('facebookfeed_titletype');
 		 
         foreach($ids['data'] as $id)
         {
@@ -209,11 +211,19 @@ class Facebook_parser
                     $story = $whoposted." posted on facebook";      
 	    }
    
-            $entry['title'] = $story;
 
             $message = $id->message;
             if($message=="")
                 $message=$id->description;
+				
+			if($titletype=="summary")
+			{
+				$entry['title'] = $message;
+			}
+			else
+			{
+				$entry['title'] = $story;
+			}
 
             //$message = preg_replace('~[^\x20-\x7E\xA3]*~','',$message);
             $message = preg_replace('~[^\x20-\x7E]*~','',$message);

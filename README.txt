@@ -63,5 +63,12 @@ Non yet
 = 1.0 =
 * Inital release
 
+= Changes on github =
+* Better facebook embedded video support
+* changed graph api to use /posts/ instead of /feed/ to only show owner/page approved posts and not things from others
+* added option to use the facebook story eg "XYZ updated their status" or to use a summary of the post as the title
+* added an option to allow the name in the fall back story title to be set. Eg if you have a status update that facebook 
+  does not pass a valid story for then this will append something statring with your option  	
+
 == Upgrade Notice ==
 

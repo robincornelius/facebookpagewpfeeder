@@ -64,8 +64,24 @@ do_settings_sections( 'FacebookPageFeed' );
            </td>
         </tr>
 		
+		  <tr valign="top">
+        <th scope="row">Title type</th>
+        <td>
+            
+            <?php 
+
+            $category =  get_option('facebookfeed_titletype'); ?>
+           <select name="facebookfeed_titletype">
+		   <option value="story" <?php selected( $category, "story" ); ?> >story</option>
+		   <option value="summary" <?php selected( $category, "summary" ); ?> >summary</option>
+		   </select>
+
+            
+           </td>
+        </tr>
+		
 		<tr valign="top">
-        <th scope="row">Post title (??? posted on facebook) </th>
+        <th scope="row">fallback post title </th>
         <td><input type="text" name="facebookfeed_who" value="<?php echo esc_attr( get_option('facebookfeed_who') ); ?>" /></td>
         </tr>
 

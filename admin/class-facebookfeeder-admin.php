@@ -116,6 +116,8 @@ class Plugin_Name_Admin {
             register_setting( 'FacebookPageFeed', 'facebookfeed_synclimit' );
             register_setting( 'FacebookPageFeed', 'facebookfeed_nextsyncfrom' ); 
 			register_setting( 'FacebookPageFeed', 'facebookfeed_who' ); 
+			register_setting( 'FacebookPageFeed', 'facebookfeed_titletype' ); 
+			
         }
         
         public function options_do_page() {
